@@ -1,0 +1,162 @@
+%% rnaastex.cls is the classfile used for Research Notes. It is derived
+%% from aastex61.cls with a few tweaks to allow for the unique format required.
+\documentclass[twocolumn]{aastex62}
+
+%% Define new commands here
+\newcommand\latex{La\TeX}
+
+\newcommand{\tess}{{\it TESS}}
+\newcommand{\kep}{{\it Kepler}}
+\newcommand{\wf}{{\it WFIRST}}
+
+\newcommand{\todo}[3]{{\color{#2} \emph{#1} TO DO: #3}}
+\newcommand{\mebtodo}[1]{\todo{MEGAN}{cyan}{#1}}
+\newcommand{\btmtodo}[1]{\todo{BEN}{red}{#1}}
+\newcommand{\anytodo}[1]{\todo{ANYONE}{green}{#1}}
+
+\usepackage{hyperref}
+
+\newcommand{\chicago}{Department of Astronomy and Astrophysics, University of
+Chicago, 5640 S. Ellis Ave, Chicago, IL 60637, USA}
+\newcommand{\sagan}{Sagan Fellow}
+
+\newcommand{\flatiron}{Flatiron Institute, Simons Foundation, 162 Fifth Ave, New York, NY 10010, USA}
+
+\shorttitle{Finding Hot Jupiters Working Title}
+\shortauthors{Montet and Bedell}
+
+
+\begin{document}
+
+\title{Detecting Hot Jupiters through Asynchronous Rotation}
+
+
+%% Note that the corresponding author command and emails has to come
+%% before everything else. Also place all the emails in the \email
+%% command instead of using multiple \email calls.
+\correspondingauthor{Benjamin T. Montet}
+\email{bmontet@uchicago.edu}
+
+
+
+\author[0000-0001-7516-8308]{Benjamin~T.~Montet}
+\altaffiliation{\sagan}
+\affiliation{\chicago}
+
+\author{Megan E. Bedell}
+\affiliation{\flatiron}
+
+
+
+%% The \author command can take an optional ORCID.
+
+
+%% Note that RNAAS manuscripts DO NOT have abstracts.
+%% See the online documentation for the full list of available subject
+%% keywords and the rules for their use.
+
+\begin{abstract}
+    Working abstract here, we will fill this in later
+\end{abstract}
+
+\keywords{test
+}
+
+\section{Introduction}
+
+Background here:
+
+co-moving stars as wide binaries
+
+wide binary components should be the same in many properties (esp. age), if they're not that's interesting: Poppenhaeger and Wolk 2014
+
+gyrochronology: rotation + age link
+
+rotation can be affected by HJs. we will look for this.
+
+
+
+%\section{Asynchronous Rotation}
+
+
+%Let's talk here about known HJs in wide binaries, and how many of them have faster rotation than their neighbors. We can use this to find HJs
+
+%Show examples, if we can find one or more HJs with a wide binary companion in Kepler/K2.
+%Do they also show excess flare activity?
+
+%Let's also look at the percentage of hot jupiters with measured Prot in Kepler/K2
+
+%This distribution is different than the field Prot observations? For what size planets/what periods?
+
+
+\section{Known HJ hosts in Kepler and K2}
+\subsection{Co-moving companions}
+
+selection of HJ hosts
+
+search for co-moving pairs
+
+(FIGURE: error ellipses in parallax-PM space)
+
+how many did we find?
+
+(TABLE)
+
+\subsection{Rotation periods of pairs}
+
+how many of these have measurable rotation periods?
+
+(FIGURE: multipanel example of autocorrelation functions)
+
+are they significantly different?
+
+(TABLE)
+
+\subsection{Other disparate age indicators}
+
+flaring?
+
+Do we see any beaming signals in any of these stars? Do we xmatch with the Milholland results?
+
+x-ray sources in GALEX?
+
+
+
+\section{Predicting HJ hosts}
+\subsection{Kepler and K2}
+using rotation periods in co-moving pairs without known planets to predict spun-up hosts
+
+quantify observations needed
+
+this will allow us to find non-transiting HJs with known ages
+
+\subsection{TESS}
+
+What 2-minute cadence targets have a co-moving companion?
+
+do some wild extrapolation to FFI stars%
+
+\section{Conclusions}
+
+
+
+
+\acknowledgments
+
+
+Work by B.T.M. was performed under contract with the Jet Propulsion
+Laboratory (JPL) funded by NASA through the Sagan Fellowship Program executed
+by the NASA Exoplanet Science Institute.
+
+
+\software{%
+  numpy \citep{numpy}, 
+  }
+ 
+\facility{Kepler, Gaia}
+ 
+\bibliography{papers}
+
+
+\end{document}
+%
