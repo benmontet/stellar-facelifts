@@ -1,18 +1,26 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from plot_tools import error_ellipse
 
 def make_x(star):
     """
     returns a vector of x = [parallax, pmra, pmdec]
     """
     names = ['parallax', 'pmra', 'pmdec']
-    return star.loc[names].values.astype('f')
+    try:
+        return star.loc[names].values.astype('f')
+    except:
+        return star[names].values[0].astype('f')
 
 def make_xerr(star):
     """
     returns a vector of xerr = [parallax_error, pmra_error, pmdec_error]
     """
     err_names = ['parallax_error', 'pmra_error', 'pmdec_error']
-    return star.loc[err_names].values.astype('f')
+    try:
+        return star.loc[err_names].values.astype('f')
+    except:
+        return star[err_names].values[0].astype('f')
 
 def ppm_check(star1, star2, sigma=5.):
     """
@@ -41,7 +49,10 @@ def make_cov(star):
         for j, name2 in enumerate(names):
             if j >= i:
                 continue
-            corr = star.loc["{0}_{1}_corr".format(name2, name1)]
+            try:
+                corr = star.loc["{0}_{1}_corr".format(name2, name1)]
+            except:
+                corr = star["{0}_{1}_corr".format(name2, name1)].values[0]
             C[i, j] = corr * np.sqrt(C[i, i] * C[j, j])
             C[j, i] = C[i, j]
     return C
@@ -68,3 +79,40 @@ def calc_chisq_nonzero(star):
     x = make_x(star)[1:]
     cov = make_cov(star)[1:,1:]
     return np.dot(x, np.linalg.solve(cov, x))
+    
+def plot_xs(star1, star2, sigma=1):
+    fs = 12
+    x1 = make_x(star1)
+    cov1 = make_cov(star1)
+    x2 = make_x(star2)
+    cov2 = make_cov(star2)
+    fig = plt.figure(figsize=(12,4))
+    ax1 = fig.add_subplot(131)
+    error_ellipse(ax1, x1[0], x1[1], cov1[:2,:2], ec='red', sigma=sigma)
+    error_ellipse(ax1, x2[0], x2[1], cov2[:2,:2], ec='blue', sigma=sigma)
+    ax1.set_xlim([min([x1[0], x2[0]]) - 5., max([x1[0], x2[0]]) + 5.])
+    ax1.set_ylim([min([x1[1], x2[1]]) - 5., max([x1[1], x2[1]]) + 5.])
+    ax1.set_xlabel('Parallax (mas)', fontsize=fs)
+    ax1.set_ylabel('PM RA (mas yr$^{-1}$)', fontsize=fs)
+
+    ax2 = fig.add_subplot(133)
+    error_ellipse(ax2, x1[1], x1[2], cov1[1:,1:], ec='red', sigma=sigma)
+    error_ellipse(ax2, x2[1], x2[2], cov2[1:,1:], ec='blue', sigma=sigma)
+    ax2.set_xlim([min([x1[1], x2[1]]) - 5., max([x1[1], x2[1]]) + 5.])
+    ax2.set_ylim([min([x1[2], x2[2]]) - 5., max([x1[2], x2[2]]) + 5.])
+    ax2.set_xlabel('PM RA (mas yr$^{-1}$)', fontsize=fs)
+    ax2.set_ylabel('PM Dec (mas yr$^{-1}$)', fontsize=fs)
+
+    ax3 = fig.add_subplot(132)
+    c1 = np.delete(np.delete(cov1, 1, axis=0), 1, axis=1)
+    c2 = np.delete(np.delete(cov2, 1, axis=0), 1, axis=1)
+    error_ellipse(ax3, x1[0], x1[2], c1, ec='red', sigma=sigma)
+    error_ellipse(ax3, x2[0], x2[2], c2, ec='blue', sigma=sigma)
+    ax3.set_xlim([min([x1[0], x2[0]]) - 5., max([x1[0], x2[0]]) + 5.])
+    ax3.set_ylim([min([x1[2], x2[2]]) - 5., max([x1[2], x2[2]]) + 5.])
+    ax3.set_xlabel('Parallax (mas)', fontsize=fs)
+    ax3.set_ylabel('PM Dec (mas yr$^{-1}$)', fontsize=fs)
+
+    fig.subplots_adjust(wspace = 0.5)
+    #fig.text(0.5, 0.95, 'match #{0}'.format(i), horizontalalignment='center',
+    #         transform=ax3.transAxes, fontsize=fs+2)
