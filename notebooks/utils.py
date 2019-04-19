@@ -57,6 +57,33 @@ def make_cov(star):
             C[j, i] = C[i, j]
     return C
 
+def star_is_good(star):
+    """
+    determine whether star meets the following requirements:
+     - has 5-parameter solution
+     - has >8 visibility periods used in solution
+     - low astrometric excess noise (as defined in Gaia Collaboration (2018) H-R diagram paper)
+     - has a significantly non-zero proper motion in either RA or Dec
+    returns boolean
+    """
+    plx_check = np.isfinite(star.loc['parallax'])
+    if not plx_check:
+        return False
+    vis_periods_check = star.loc['visibility_periods_used'] > 8
+    if not vis_periods_check:
+        return False
+    pm_check = (star.loc['pmra']/star.loc['pmra_error'] >= 3.) \
+                or (star.loc['pmdec']/star.loc['pmdec_error'] >= 3.)
+    if not pm_check:
+        return False
+    chi2 = star.loc['astrometric_chi2_al']
+    nu_prime = star.loc['astrometric_n_good_obs_al']
+    mg = star.loc['phot_g_mean_mag']
+    plx_noise_check = np.sqrt(chi2/(nu_prime - 5.)) < 1.2*max([1., np.exp(-0.2*(mg - 19.5))])   
+    if not plx_noise_check:
+        return False
+    return True
+
 def chisq(star1, star2):
     """
     calculates chisquared for two stars based on their parallax and 2D proper motions
@@ -66,7 +93,7 @@ def chisq(star1, star2):
     return np.dot(deltax, np.linalg.solve(cplusc, deltax))
     
 def calc_chisq_for_pair(m, primary):
-    if ppm_check(primary, m):
+    if star_is_good(m) & ppm_check(primary, m):
         return chisq(primary, m)
     else:
         return -1
