@@ -1,8 +1,0 @@
-SELECT * , distance(
-  POINT('ICRS', hj.col1, hj.col2),
-  POINT('ICRS', gaia.ra, gaia.dec)) AS ang_dist
-FROM gaiadr2.gaia_source AS gaia, user_mbedell.hjhosts AS hj
-WHERE 1=CONTAINS(
-  POINT('ICRS', hj.col1, hj.col2),
-  CIRCLE('ICRS', gaia.ra, gaia.dec, 0.033333)
-)
