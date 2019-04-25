@@ -15,6 +15,7 @@
 \newcommand{\anytodo}[1]{\todo{ANYONE}{green}{#1}}
 
 \usepackage{hyperref}
+\usepackage{amsmath}
 
 \newcommand{\chicago}{Department of Astronomy and Astrophysics, University of
 Chicago, 5640 S. Ellis Ave, Chicago, IL 60637, USA}
@@ -56,11 +57,15 @@ Chicago, 5640 S. Ellis Ave, Chicago, IL 60637, USA}
 %% keywords and the rules for their use.
 
 \begin{abstract}
-    Working abstract here, we will fill this in later
+    Working abstract here, we will fill this in later.
+    Words about tidal Q as well?
 \end{abstract}
 
 \keywords{test
 }
+
+
+
 
 \section{Introduction}
 
@@ -73,6 +78,17 @@ wide binary components should be the same in many properties (esp. age), if they
 gyrochronology: rotation + age link
 
 rotation can be affected by HJs. we will look for this.
+
+
+\section{The Rotation Distribution of Hot Jupiters}
+
+Let's talk about the distribution of rotation periods we measure for planet hosts.
+
+We select all KOIs regardless of disposition based on transit depth, a/Rstar, period. Period does better than a/R star, why are some a/R stars very wrong? I believe this is because of the transit models they use, building eccentric models, but I need to verify this.
+
+The rotation distribution we see looks different for the HJs for some definition of HJs. Very similar to the orbital period distribution, while smaller/more distant planets look like the field population (See also Ceillier15}.
+
+Okay, so HJs orbit rapidly rotating stars! Does that mean they're orbiting rapidly rotating stars because they're young and they spiral in quickly, or because they're spinning up their host stars? We can use \textbf{wide binaries} to figure that out.
 
 
 
@@ -92,13 +108,61 @@ rotation can be affected by HJs. we will look for this.
 \section{Known HJ hosts in Kepler and K2}
 \subsection{Co-moving companions}
 
-selection of HJ hosts
+selection of HJ hosts: orbital period criteria, Rp/Rs criteria.
 
-search for co-moving pairs
+From this catalog of candidate host stars, we performed a cross-match to the Gaia DR2 database to find their astrometric properties. A match between the catalogs was considered valid if the distance between the Kepler source and the Gaia source was less than 0.75 arcseconds and the difference in Kepler K magnitude and Gaia G magnitude for the sources was less than 1.5 magnitudes. The distance between source coordinates used in this cut was calculated at the reference epoch J2000, meaning that the Gaia coordinates for each source were moved from the DR2 reported values at JD 2015.5 to their predicted values at JD 2000.0 using the Gaia proper motions. Of the 1699 candidate host stars, 1654 could be matched to a Gaia source. We speculate that the remaining 45 sources, many of which were known eclipsing binaries, may have been cut from the Gaia DR2 catalog due to their excess photometric variability (cite).
+
+Given the Gaia DR2 sources corresponding to each Kepler candidate host star, we performed a Gaia database search for nearby sources within 1 arcminute that are co-moving with the Kepler star. We consider sources to be co-moving if the following requirements are satisfied:
+\begin{itemize}
+    \item both sources have parallax measured to SNR $\geq$ 5
+    \item both sources have significantly non-zero proper motion (SNR $\geq$ 3 for $\mu_{RA}$ and/or $\mu_{Dec}$)
+    \item both sources have low astrometric jitter as defined by \citet{GaiaHR}
+    \item both sources have more than 8 visibility periods used in their astrometric solution
+    \item the two sources' parallaxes and proper motions agree to $\chi^2 <= 5$, where $\chi_{m,n}^2$ for sources $m$ and $n$ is defined as:
+    \begin{equation}
+    \chi_{m,n}^2 = (X_m - X_n) (C_m + C_n)^{-1} (X_m - X_n) , 
+    \end{equation}
+    with $X_n$ as:
+    \begin{equation}
+    X_n = 
+    \begin{bmatrix}
+    \pi_n \\
+    \mu_{RA, n} \\    
+    \mu_{Dec, n}
+    \end{bmatrix}
+    \end{equation}
+    and $C_n$ as the corresponding covariance matrix.
+\end{itemize}
+
+
+And then more here!
+
+\subsection{Our favorite system}
+
+KIC 6507427 is the bright star, KIC 6507433 is the faint star.
+
+Ephemeris match! Morton+ show 20\% FPP for the bright one and 80\% for the faint one (why?)
+
+PSF modeling, transit and rapid rotation clearly on the faint star
+
+The older star has no periodicity, but can we measure an isochronal age?
+
+Yes! With isochrones, it has to be evolved. Also it can't be two stars, still has to be evolved.
+
+We can also use flicker, and this gives a logg of 2.70 to 2.90 depending on individual quarters. So we have an age, and it is old!
+
+Bonus: can we say something about tidal Q since we know the age of the system?
+
+Other bonus: Can we say anything about flare rates for this star? Or pull anything from the literature?
+
+
+\section{EVERYTHING BELOW THIS IS OLD NOTES and POSSIBLY DIFFERENT THAN WHAT WE ACTUALLY DO}
 
 (FIGURE: error ellipses in parallax-PM space)
 
 how many did we find?
+
+KOI 2455 == 6507427 (other is KOI-3815) 20\%, 80\% FPP from Morton+. We show transit is on the primary from PSF modeling (going to have to describe that). 
 
 \input{kepler_matches_table.tex}
 
@@ -127,11 +191,16 @@ x-ray sources in GALEX?
 
 \section{Predicting HJ hosts}
 \subsection{Kepler and K2}
+
+We find 1 in Kepler with a transiting HJ. Transits have a 5-10\% probability for HJs, so there are 10-20 HJs with comoving companions detectable with this method in the Kepler field alone.
+
 using rotation periods in co-moving pairs without known planets to predict spun-up hosts
 
 quantify observations needed
 
 this will allow us to find non-transiting HJs with known ages
+
+Can we flip around section 2, given a measurable rotation period of 3-5 days and the occurrence rate of hot Jupiters, what is the relative probability it is young vs the probability it is being spun up? Can we make a statistical argument based on spin-down relations and HJ occurrence rates, assuming everything else is equal?
 
 \subsection{TESS}
 
