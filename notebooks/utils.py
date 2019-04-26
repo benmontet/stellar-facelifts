@@ -62,12 +62,17 @@ def star_is_good(star):
     determine whether star meets the following requirements:
      - has 5-parameter solution
      - has >8 visibility periods used in solution
+     - is bright-ish (G <= 18)
      - low astrometric excess noise (as defined in Gaia Collaboration (2018) H-R diagram paper)
      - has a significantly non-zero proper motion in either RA or Dec
     returns boolean
     """
     plx_check = np.isfinite(star.loc['parallax'])
     if not plx_check:
+        return False
+    mg = star.loc['phot_g_mean_mag']
+    brightness_check = mg <= 20.
+    if not brightness_check:
         return False
     vis_periods_check = star.loc['visibility_periods_used'] > 8
     if not vis_periods_check:
@@ -78,7 +83,6 @@ def star_is_good(star):
         return False
     chi2 = star.loc['astrometric_chi2_al']
     nu_prime = star.loc['astrometric_n_good_obs_al']
-    mg = star.loc['phot_g_mean_mag']
     plx_noise_check = np.sqrt(chi2/(nu_prime - 5.)) < 1.2*max([1., np.exp(-0.2*(mg - 19.5))])   
     if not plx_noise_check:
         return False
